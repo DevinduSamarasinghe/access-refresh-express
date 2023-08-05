@@ -1,13 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import { getSession } from "../db";
 import { signJWT, verifyJWT } from "../utils/jwt.utils";
+import { access } from "fs";
 
 function deserializeUser(req:Request, res:Response, next: NextFunction){
+
     const {accessToken, refreshToken} = req.cookies;
 
     if(!accessToken){
         return next();
     }
+
+    console.log(accessToken);
 
     const {payload, expired} = verifyJWT(accessToken);
 

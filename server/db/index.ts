@@ -21,7 +21,7 @@ export function invalidateSession(sessionId: string){
 
 export function createSession(email: string, name: string){
     const sessionId = String(Object.keys(sessions).length + 1);
-    
+    console.log(sessionId);
     const session = {
         sessionId,
         email,
@@ -29,6 +29,8 @@ export function createSession(email: string, name: string){
         name
     }
     sessions[sessionId] = session;
+
+    console.log(sessions);
     return session;
 }
 

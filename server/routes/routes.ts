@@ -1,12 +1,12 @@
-import { Express, Request, Response } from "express";
+import express,{ Express, Request, Response } from "express";
 import { createSessionHandler, getSessionHandler, deleteSessionHandler } from "../controllers/session.controller";
 import { requiredUser } from "../middleware/requireUser";
 
-function routes(app: Express){
+const router = express.Router();
 
-    app.post('api/session', createSessionHandler);
-    app.get('api/session', requiredUser, getSessionHandler);
-    app.delete('api/session', requiredUser, deleteSessionHandler);
-}
+router.post('/api/session', createSessionHandler);
+router.get('/api/session', requiredUser, getSessionHandler);
+router.delete('/api/session', requiredUser, deleteSessionHandler);
 
-export default routes;
+
+export default router;
