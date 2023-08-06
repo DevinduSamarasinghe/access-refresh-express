@@ -6,12 +6,12 @@ import { access } from "fs";
 function deserializeUser(req:Request, res:Response, next: NextFunction){
 
     const {accessToken, refreshToken} = req.cookies;
+    console.log("Access Token: ", accessToken);
+    console.log("Refresh Token: ", refreshToken);
 
     if(!accessToken){
         return next();
     }
-
-    console.log(accessToken);
 
     const {payload, expired} = verifyJWT(accessToken);
 
@@ -19,12 +19,16 @@ function deserializeUser(req:Request, res:Response, next: NextFunction){
     if(payload){
         //@ts-ignore
         req.user = payload;
+
+        //@ts-ignore
+        console.log(req.user);
         return next();
     }
 
     //expired but valid access token
     const {payload: refresh} = expired && refreshToken ? verifyJWT(refreshToken) : {payload: null};
 
+    console.log("Refresh is: ",refresh);
     if(!refresh){
         return next();
     }
@@ -35,7 +39,7 @@ function deserializeUser(req:Request, res:Response, next: NextFunction){
         return next();
     }
 
-    const newAccessToken = signJWT(session, "5m");
+    const newAccessToken = signJWT(session, "5s");
     res.cookie("accessToken", newAccessToken, {maxAge: 3000000, httpOnly: true});
     //@ts-ignore
     req.user = verifyJWT(newAccessToken).payload;

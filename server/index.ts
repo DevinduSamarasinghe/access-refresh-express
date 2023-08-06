@@ -12,19 +12,19 @@ app.use(express.urlencoded({ extended: true }));
 
 const PORT = 8080 || process.env.PORT;
 const corsOptions = {
-  origin: "*",
+  credentials: true,
+  origin: "http://localhost:5173",
 };
 app.use(cors(corsOptions));
 
 //simple route
-app.use("", router);
-app.use(deserializeUser);
 
-app.get("", (req: Request, res: Response) => {
-  res.json({ message: "Welcome to the application" });
-});
+function main() {
+  app.use(deserializeUser);
+  app.use("/", router);
 
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+main();

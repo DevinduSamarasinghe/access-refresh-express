@@ -7,6 +7,8 @@ function App() {
   const [sessionData, setSessionData] = useState();
   const [logoutData, setLogoutData] = useState();
 
+  console.log(loginData);
+
   async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
 
@@ -20,20 +22,22 @@ function App() {
     console.log(email, password);
     axios
       .post(
-        `http://localhost:4000/api/session`,
+        `http://localhost:8080/api/session`,
         { email, password },
         {
-          withCredentials: false,
+          withCredentials: true,
         }
       )
       .then((res) => setLoginData(res.data))
       .catch((error) => setLoginData(error.message));
+
+      console.log(loginData);
   }
 
   async function getSessionData() {
     axios
-      .get(`http://localhost:4000/api/session`, {
-        withCredentials: false,
+      .get(`http://localhost:8080/api/session`, {
+        withCredentials: true,
       })
       .then((res) => setSessionData(res.data))
       .catch((error) => setSessionData(error.message));
@@ -41,8 +45,8 @@ function App() {
 
   async function logout() {
     axios
-      .delete(`http://localhost:4000/api/session`, {
-        withCredentials: false,
+      .delete(`http://localhost:8080/api/session`, {
+        withCredentials: true,
       })
       .then((res) => setLogoutData(res.data))
       .catch((error) => setLogoutData(error.message));
@@ -74,8 +78,11 @@ function App() {
       <div className="wrapper">
         <h2>Logout</h2>
         <button onClick={logout}>Logout</button>
-
         <div className="data">{JSON.stringify(logoutData, null, 4)}</div>
+
+        <div>
+          
+        </div>
       </div>
     </div>
   );
